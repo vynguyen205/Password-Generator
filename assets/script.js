@@ -98,46 +98,81 @@ var numbers = [
 
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
-function generatePass(){
-
-}
 
 // Write password to the #password input
-function writePassword() {
+//this is a function declaration
+
+function writePassword(event) {
+  event.preventDefault();
   var password = generatePassword();
+  
   var passwordText = document.querySelector("#password");
   
   if (password === undefined) {
     return
-  } //wtf is this???
-  
+  } 
   passwordText.value = password;
   
 }
-//
+//create arrays containing all random possible chactacters
+//filter out not okay characters
+//make it randomly select all of the characters to generate the password
+// write all the possible passwords here
 function generatePassword() {
   
+  var characterLength = parseInt(prompt( "How many characters do you want from in your password. Please select from 8-128."))
+  /* in this characterLength variable you are setting if statements which sets up the parameters for the the length of the password */
+  if (Number.isNaN(characterLength)) {
+  alert ("You must enter a number.")
+  return generatePassword()
+  }
   
-}
-//series of prompt when the user clicks on the gen pass button
-function getUserSelection() {
+  if (characterLength < 8) {
+    alert("You must enter at least 8 characters.")
+    return generatePassword() ;
   
-  var characterLength = prompt( "How many characters do you want from in your password. Please select from 8-128.");
-  console.log(characterLength)
+  } else if (characterLength > 128) {
+    alert ("Must be less than 128");
+    return generatePassword()
+  }
 
   var getUppercase = confirm("Click OK if you want uppercase letters.");
-  console.log(getUppercase);
-
-  var getLowercase = confirm("Click OK if you want lowercase letters.");
-  console.log(getLowercase)
-
-  var getNumbers = confirm("Click OK if you want numbers");
-  console.log(getNumbers)
-
-  var getSpecialChar = confirm("Click OK if you want special characters");
-  console.log(getSpecialChar)
   
-}
+  var getLowercase = confirm("Click OK if you want lowercase letters.");
+  
+  var getNumbers = confirm("Click OK if you want numbers.");
+  
+  var getSpecialChar = confirm("Click OK if you want special characters.");
 
-// Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+  if (!getUppercase && !getLowercase && !getNumbers && !getSpecialChar) {
+    alert("You must make a selection.")
+    return generatePassword();
+  }
+  var possibleCharacters = []; //starts off empty
+  var generatedPassword = ""; //starts off empty
+
+
+  if (getLowercase) {
+    possibleCharacters = possibleCharacters.concat(lowerCase) /* concat = takes an array and joins it with another array
+    possibleCharacters starts off empty, then you take that empty array and concat it with the lowerCase array (global characters)*/
+  }
+  if (getUppercase) {
+    possibleCharacters = possibleCharacters.concat(upperCase)
+  }
+  if (getSpecialChar) {
+    possibleCharacters = possibleCharacters.concat(specialCharacters)
+  }
+  if (getNumbers) {
+    possibleCharacters = possibleCharacters.concat(numbers)
+  }
+
+  for (var i = 0; i < characterLength; i++) {
+    var randomChar = Math.floor(Math.random() * possibleCharacters.length) /* here in this for-loop you create another variable
+    that will randomize all of the possible characters and have it stopping the length of each array*/
+    generatedPassword += possibleCharacters[randomChar]
+  }
+return generatedPassword //returning the generatedPasswords which will fill in the blank strings with the randomize password
+}
+  
+  // Add event listener to generate button
+  generateBtn.addEventListener("click", writePassword);
