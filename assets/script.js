@@ -34,7 +34,7 @@ var upperCase = [
   'E',
   'F',
   'G',
-  'H',
+  'H'
   'I',
   'J',
   'K',
